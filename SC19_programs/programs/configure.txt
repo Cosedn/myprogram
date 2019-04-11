@@ -1,0 +1,139 @@
+The default dataset is MovieLens 1M for the programs. To apply the programs to other datasets, some configure on codes needs to be done manually.
+
+There is the list of each dataset with its parameters. If you wants to apply the program to different dataset, simply set the parameters according to the list, and re-compile the program.
+
+=========================================================================================
+Dataset name                MovliLens 100K            MovlieLens 1M           MovlieLens 10M           MovlieLens 20M           Netflix           Netflix2
+
+Dataset file name           ratings100k.dat             ratings1m.dat             ratings10m.dat             ratings20m.dat          netflixk.dat     netflixk2.dat
+
+Dataset transpose
+file name                      ratings100kc.dat            ratings1mc.dat            ratings10mc.dat           ratings20mc.dat         netflixkc.dat     netflixkc2.dat
+
+sum                                   80000                           1000209                     10000054                       20000263             100480507      100480507         
+
+u                                          943                                 6040                          69878                           138493                   17770             17770
+
+v                                         1682                                3952                          10677                             26744                   480189            480189
+
+=========================================================================================
+
+Our experiment varies n from 1 to 13, and set k as 5.
+
+The configuration is as follows:
+
+
+For EsPa-DSGD
+-----------------------------------------------------------------------------------------------------
+main.c
+8: #define USERS              //set u
+9: #define ITEMS	         //set v
+10: #define ROW              //set n
+11: #define COL                //set n (ROW==COL)
+12: #define ATTR            //set k, 5 as default
+65: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
+//substitute ratings1m.dat to the dataset file name you use
+87: File_Separate("../../datasets/original/ratings1m.dat", u_block, v_block, r_tag);
+//substitute ratings1m.dat to the dataset file name you use
+179: if(curr_rmse<rmse && loop_counts<10000 ) rmse=curr_rmse;   //set maximum iterations, 10000 as default
+------------------------------------------------------------------------------------------------------
+dsgd.c:
+4: #define ROW              //set n (consistent with main.c)
+5: #define COL                //set n (consistent with main.c)
+149:
+int user,item; double rating;  //for MovieLens 10M and MovieLens 20M
+int user,item, rating; //for the other 4 datasets
+174: 
+while(fscanf(fp,"%d %d %d %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 100k and MovieLens 1M
+while(fscanf(fp,"%d %d %lf %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 10M and MovieLens 20M
+while(fscanf(fp,"%d %d %lf",&user,&item,&rating)!=EOF)
+// for Netflix and Netflix2
+
+
+For BaPa-DSGD
+-----------------------------------------------------------------------------------------------------
+main.c
+8: #define USERS              //set u
+9: #define ITEMS	         //set v
+10: #define ROW              //set n
+11: #define COL                //set n (ROW==COL)
+12: #define ATTR            //set k, 5 as default
+65: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
+//substitute ratings1m.dat to the dataset file name you use
+87: File_Separate("../../datasets/original/ratings1m.dat", u_block, v_block, r_tag);
+//substitute ratings1m.dat to the dataset file name you use
+179: if(curr_rmse<rmse && loop_counts<10000 ) rmse=curr_rmse;   //set maximum iterations, 10000 as default
+------------------------------------------------------------------------------------------------------
+dsgd.c:
+4: #define ROW              //set n (consistent with main.c)
+5: #define COL                //set n (consistent with main.c)
+137:
+int user,item; double rating;  //for MovieLens 10M and MovieLens 20M
+int user,item, rating; //for the other 4 datasets
+162: 
+while(fscanf(fp,"%d %d %d %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 100k and MovieLens 1M
+while(fscanf(fp,"%d %d %lf %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 10M and MovieLens 20M
+while(fscanf(fp,"%d %d %lf",&user,&item,&rating)!=EOF)
+// for Netflix and Netflix2
+
+
+For EsPa-CCD++
+-----------------------------------------------------------------------------------------------------
+main.c
+8: #define USERS              //set u
+9: #define ITEMS	         //set v
+10: #define ROW              //set n
+11: #define COL                //set n (ROW==COL)
+12: #define ATTR            //set k, 5 as default
+69: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
+//substitute ratings1m.dat to the dataset file name you use
+91: File_Separate("../../datasets/original/ratings1m.dat","../../datasets/transpose/ratings1mc.dat", u_block, v_block, r_rtag, r_ctag);
+//substitute ratings1m.dat to the dataset file name you use, and substitute ratings1mc.dat to the dataset transpose file name you use
+186: if(curr_rmse<rmse && loop_counts<10000 ) rmse=curr_rmse;   //set maximum iterations, 10000 as default
+------------------------------------------------------------------------------------------------------
+ccd.c:
+6: #define ROW              //set n (consistent with main.c)
+7: #define COL                //set n (consistent with main.c)
+158:
+int user,item; double rating;  //for MovieLens 10M and MovieLens 20M
+int user,item, rating; //for the other 4 datasets
+196: 
+while(fscanf(fp,"%d %d %d %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 100k and MovieLens 1M
+while(fscanf(fp,"%d %d %lf %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 10M and MovieLens 20M
+while(fscanf(fp,"%d %d %lf",&user,&item,&rating)!=EOF)
+// for Netflix and Netflix2
+
+
+For BaPa-CCD++
+-----------------------------------------------------------------------------------------------------
+main.c
+8: #define USERS              //set u
+9: #define ITEMS	         //set v
+10: #define ROW              //set n
+11: #define COL                //set n (ROW==COL)
+12: #define ATTR            //set k, 5 as default
+69: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
+//substitute ratings1m.dat to the dataset file name you use
+91: File_Separate("../../datasets/original/ratings1m.dat","../../datasets/transpose/ratings1mc.dat", u_block, v_block, r_rtag, r_ctag);
+//substitute ratings1m.dat to the dataset file name you use, and substitute ratings1mc.dat to the dataset transpose file name you use
+186: if(curr_rmse<rmse && loop_counts<10000 ) rmse=curr_rmse;   //set maximum iterations, 10000 as default
+------------------------------------------------------------------------------------------------------
+ccd.c:
+6: #define ROW              //set n (consistent with main.c)
+7: #define COL                //set n (consistent with main.c)
+158:
+int user,item; double rating;  //for MovieLens 10M and MovieLens 20M
+int user,item, rating; //for the other 4 datasets
+196: 
+while(fscanf(fp,"%d %d %d %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 100k and MovieLens 1M
+while(fscanf(fp,"%d %d %lf %ld",&user,&item,&rating,&temp)!=EOF)
+// for MovieLens 10M and MovieLens 20M
+while(fscanf(fp,"%d %d %lf",&user,&item,&rating)!=EOF)
+// for Netflix and Netflix2
