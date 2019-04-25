@@ -16,6 +16,7 @@ u                                          943                                 6
 
 v                                         1682                                3952                          10677                             26744                   480189            480189
 
+learning rate                        0.0005                           0.00005                      0.00001                        0.000005                            0.000001           0.000001
 =========================================================================================
 
 Our experiment varies n from 1 to 13, and set k as 5.
@@ -31,6 +32,7 @@ main.c
 10: #define ROW              //set n
 11: #define COL                //set n (ROW==COL)
 12: #define ATTR            //set k, 5 as default
+40: double alpha=0.00005;      //set the learing rate, according to the dataset you use
 65: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
 //substitute ratings1m.dat to the dataset file name you use
 87: File_Separate("../../datasets/original/ratings1m.dat", u_block, v_block, r_tag);
@@ -60,6 +62,7 @@ main.c
 10: #define ROW              //set n
 11: #define COL                //set n (ROW==COL)
 12: #define ATTR            //set k, 5 as default
+40: double alpha=0.00005;      //set the learing rate, according to the dataset you use
 65: num=Input_File("../../datasets/original/ratings1m.dat", u_entries, v_entries);
 //substitute ratings1m.dat to the dataset file name you use
 87: File_Separate("../../datasets/original/ratings1m.dat", u_block, v_block, r_tag);
